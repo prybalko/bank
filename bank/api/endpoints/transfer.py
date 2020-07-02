@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 
 from bank import crud, schemas
 from bank.api import deps
-from bank.models import Transaction
 
 router = APIRouter()
 
