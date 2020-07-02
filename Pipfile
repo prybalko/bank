@@ -4,8 +4,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
+requests = "*"
 
 [packages]
+fastapi = "0.58.1"
+uvicorn = "0.11.5"
+alembic = "1.4.2"
+pydantic = "1.5.1"
+psycopg2-binary = "2.8.5"
+wait-for-it = "*"
 
 [requires]
 python_version = "3.8"
