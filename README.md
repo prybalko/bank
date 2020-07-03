@@ -7,6 +7,8 @@ deposit it and transfer money between accounts.
 
     docker-compose up -d app
 
+The app is running on http://localhost:8000/
+
 
 ## Run tests locally
 
