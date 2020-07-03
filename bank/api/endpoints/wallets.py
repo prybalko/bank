@@ -10,6 +10,7 @@ from bank import crud, schemas
 from bank.api import deps
 from bank.models import Transaction
 from bank.schemas.transaction import TransactionDirection
+from bank.utils.csv import to_csv
 
 router = APIRouter()
 
@@ -77,7 +78,7 @@ def transactions(
     if not wallet:
         raise HTTPException(status_code=404, detail="Wallet not found")
 
-    query = db.query(Transaction).filter(Transaction.wallet_id == id)
+    query = db.query(Transaction).filter(Transaction.wallet_id == id).order_by(Transaction.datetime.desc())
     if date:
         query = query.filter(func.DATE(Transaction.datetime) == date)
     if direction:
@@ -90,13 +91,6 @@ def transactions(
                 status_code=403, detail="Unsupported transaction direction"
             )
 
-    fields = ["amount", "datetime"]
-    rows = ""
-    for transaction in query:
-        rows += "\n" + ",".join(
-            map(str, [getattr(transaction, field) for field in fields])
-        )
-    if not rows:
+    if not query:
         raise HTTPException(status_code=404, detail="No transactions found")
-    header = ",".join(fields)
-    return header + rows
+    return to_csv(query, fields=["amount", "datetime"])

@@ -16,6 +16,6 @@ def test_create_wallet(db: Session) -> None:
 def test_deposit_wallet(db: Session) -> None:
     wallet = Wallet(balance=2)
     db.add(wallet)
-    wallet = crud.wallet.deposit(db=db, db_obj=wallet, amount=Decimal('1.1'))
-    assert wallet.balance == Decimal('3.1')
-    assert wallet.transactions[0].amount == Decimal('1.1')
+    wallet = crud.wallet.deposit(db=db, db_obj=wallet, amount=Decimal("1.1"))
+    assert wallet.balance == Decimal("3.1")
+    assert wallet.transactions[0].amount == Decimal("1.1")
