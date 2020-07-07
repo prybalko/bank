@@ -26,6 +26,11 @@ def transfer(
     if source_wallet.balance < transfer_in.amount:
         raise HTTPException(status_code=403, detail="Insufficient funds")
 
-    transfer_money(db, source_wallet=source_wallet, destination_wallet=destination_wallet, amount=transfer_in.amount)
+    transfer_money(
+        db,
+        source_wallet=source_wallet,
+        destination_wallet=destination_wallet,
+        amount=transfer_in.amount,
+    )
 
     return {"status": "ok"}
