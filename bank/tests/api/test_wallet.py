@@ -5,6 +5,7 @@ from sqlalchemy import exists
 from sqlalchemy.orm import Session
 
 from bank import crud
+from bank.domain.wallet import deposit_wallet
 from bank.models import Wallet
 
 
@@ -43,7 +44,7 @@ def test_deposit(client: TestClient, db: Session) -> None:
 
 def test_transactions(client: TestClient, db: Session) -> None:
     wallet = crud.wallet.create(db)
-    crud.wallet.deposit(db=db, db_obj=wallet, amount=Decimal("1.1"))
+    deposit_wallet(db=db, wallet=wallet, amount=Decimal("1.1"))
     db.commit()
 
     response = client.get(f"wallets/{wallet.id}/transactions/")

@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from bank import crud, schemas
 from bank.api import deps
+from bank.domain.transfer import transfer_money
 
 router = APIRouter()
 
@@ -25,7 +26,6 @@ def transfer(
     if source_wallet.balance < transfer_in.amount:
         raise HTTPException(status_code=403, detail="Insufficient funds")
 
-    crud.wallet.deposit(db=db, db_obj=source_wallet, amount=-transfer_in.amount)
-    crud.wallet.deposit(db=db, db_obj=destination_wallet, amount=transfer_in.amount)
-    db.commit()
+    transfer_money(db, source_wallet=source_wallet, destination_wallet=destination_wallet, amount=transfer_in.amount)
+
     return {"status": "ok"}

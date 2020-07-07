@@ -8,6 +8,7 @@ from starlette.responses import PlainTextResponse
 
 from bank import crud, schemas
 from bank.api import deps
+from bank.domain.wallet import deposit_wallet
 from bank.models import Transaction
 from bank.schemas.transaction import TransactionDirection
 from bank.utils.csv import to_csv
@@ -58,8 +59,7 @@ def deposit(
     if not wallet:
         raise HTTPException(status_code=404, detail="Wallet not found")
 
-    crud.wallet.deposit(db=db, db_obj=wallet, amount=deposit_in.amount)
-    db.commit()
+    wallet = deposit_wallet(db=db, wallet=wallet, amount=deposit_in.amount)
     return wallet
 
 
