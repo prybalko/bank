@@ -50,3 +50,8 @@ def test_transactions(client: TestClient, db: Session) -> None:
     response = client.get(f"wallets/{wallet.id}/transactions/")
     assert response.status_code == 200
     assert response.text == f"amount,datetime\n1.1,{wallet.transactions[0].datetime}"
+
+
+def test_no_transactions(client: TestClient, db: Session) -> None:
+    response = client.get("wallets/-1/transactions/")
+    assert response.status_code == 404
